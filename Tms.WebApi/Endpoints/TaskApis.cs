@@ -17,7 +17,7 @@ public static class TaskApis
         app.MapPost("api/tasks", async ([FromBody] CreateTaskDto dto, ITaskService taskService, CancellationToken ct) =>
         {
             var data = await taskService.CreateTaskAsync(dto, ct);
-            return data;
+            return Results.Created(string.Empty, data);
         });
         
         app.MapPatch("api/tasks/{taskId:int}/status", async (int taskId, [FromBody] UpdateTaskStatusDto dto, ITaskService taskService, 
