@@ -26,7 +26,8 @@ builder.Services
     .AddCap(isDevelopment, dbConnectionString, rabbitOptions)
     .AddServices()
     .AddExceptionHandler<ExceptionHandler>()
-    .AddProblemDetails();
+    .AddProblemDetails()
+    .AddHealthChecks();
 
 var app = builder.Build();
 
@@ -40,6 +41,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapTaskApis();
+app.MapTaskApis()
+    .MapHealthChecks("health");
 
 app.Run();
