@@ -1,4 +1,4 @@
-# task-management-system (TMS)
+# Task Management System (TMS)
 
 # Tms.WebApi
 
@@ -97,6 +97,8 @@ tms.webapi        |       ### CAP started!
 ```
 and the Docker containers created
 <img width="1428" alt="image" src="https://github.com/user-attachments/assets/7192930a-4280-4d10-9039-8a488b83b382" />
+
+Also, verification of the health status could be performed by the `http://localhost:{TMS_WEBAPI_PORT}/health` api.
 
 ### 5. API execution
 
