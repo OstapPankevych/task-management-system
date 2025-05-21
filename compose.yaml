@@ -1,0 +1,65 @@
+﻿services:
+  tms.db:
+    image: postgres:15
+    container_name: tms.db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+  
+  tms.db-migration:
+    image: tms.db.migration
+    container_name: tms.db.migration
+    build:
+      context: .
+      dockerfile: migrations.Dockerfile
+    depends_on:
+      tms.db:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__TmsDbConnectionString: Host=tms.db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASS}
+
+  tms.rabbitmq:
+    image: rabbitmq:3-management
+    container_name: tms.rabbitmq
+    ports:
+      - "${RABBIT_PORT}:5672"
+      - "${RABBIT_PORT_UI}:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBIT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_PASS}
+
+  tms.webapi:
+    image: tms.webapi
+    build:
+      context: .
+      dockerfile: Tms.WebApi/Dockerfile
+    container_name: tms.webapi
+    depends_on:
+      tms.db:
+        condition: service_healthy
+      tms.db-migration:
+        condition: service_completed_successfully
+      tms.rabbitmq:
+        condition: service_started
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ENV}
+      ConnectionStrings__TmsDbConnectionString: Host=tms.db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASS}
+      RabbitMq__HostName: tms.rabbitmq
+      RabbitMq__Port: 5672
+      RabbitMq__UserName: ${RABBIT_USER}
+      RabbitMq__Password: ${RABBIT_PASS}
+    ports:
+      - "${TMS_WEBAPI_PORT}:8080"
+
+volumes:
+  postgres_data:
