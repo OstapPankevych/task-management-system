@@ -25,7 +25,7 @@
 ```
 .
 ├── Tms.WebApi/           # Main ASP.NET Core Web API
-├── Tms.Services/         # Business logic layer
+├── Tms.Services/         # Business logic
 ├── Tms.Db/               # EF Core DbContext and migrations
 ├── Tms.Common/           # Shared models and helpers
 ├── migrations.Dockerfile # Dockerfile for running DB migrations (new migrations can be created using the `dotnet ef migrations add SomeMigrationName --project Tms.Db --startup-project Tms.WebApi` command)
