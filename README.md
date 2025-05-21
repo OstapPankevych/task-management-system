@@ -16,6 +16,22 @@
 
 ---
 
+---
+
+## Project Structure
+
+```
+.
+├── Tms.WebApi/           # Main ASP.NET Core Web API
+├── Tms.Services/         # Business logic layer
+├── Tms.Db/               # EF Core DbContext and migrations
+├── Tms.Common/           # Shared models and helpers
+├── migrations.Dockerfile # Dockerfile for running DB migrations (new migrations can be created using the `dotnet ef migrations add SomeMigrationName --project Tms.Db --startup-project Tms.WebApi` command)
+├── docker-compose.yml    # Service orchestration
+└── .env                  # Environment configuration
+```
+---
+
 ## 🚀 Getting Started
 
 ### 1. OS Preparation
@@ -27,7 +43,7 @@
 
 In the folder where the repository is going to be cloned, open the terminal and execute the following commands
 - git clone https://github.com/OstapPankevych/task-management-system.git
- cd task-management-system
+- cd task-management-system
 
 ### 3. Execution environment preparation
 
