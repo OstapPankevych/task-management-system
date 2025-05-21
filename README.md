@@ -2,7 +2,9 @@
 
 # Tms.WebApi
 
-**Tms.WebApi** is a .NET 9 Web API project designed for task management. It leverages PostgreSQL as the primary database, RabbitMQ for messaging, and runs with full support for Docker and Docker Compose. Database migrations are applied automatically through a dedicated service.
+**Tms.WebApi** is a .NET 9 Web API project designed for task management. It leverages PostgreSQL as the primary database, RabbitMQ for messaging (using the Outbox Pattern with .NET CAP library), and runs with full support for Docker and Docker Compose. Database migrations are applied automatically through a dedicated service.
+
+
 
 ---
 
@@ -85,14 +87,14 @@ Task Management System Web API
 
 To execute the application the command ```docker-compose up --build```
 After the successful execution, the console should display
-`
+```
 tms.webapi        | info: DotNetCore.CAP.Processor.CapProcessingServer[0]
 tms.webapi        |       Starting the processing server.
 tms.webapi        | info: DotNetCore.CAP.Internal.ConsumerRegister[0]
 tms.webapi        |       RabbitMQ consumer registered. --> amq.ctag-z2-q-aoRVI-ichVaSUwsVg
 tms.webapi        | info: DotNetCore.CAP.IBootstrapper[0]
 tms.webapi        |       ### CAP started!
-`
+```
 and the Docker containers created
 <img width="1428" alt="image" src="https://github.com/user-attachments/assets/7192930a-4280-4d10-9039-8a488b83b382" />
 
